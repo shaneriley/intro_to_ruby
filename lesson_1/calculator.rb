@@ -9,7 +9,7 @@ def get_values
   say "What is the second number?"
   num2 = gets.chomp.to_i
 
-  return num1, num2
+  [num1, num2]
 end
 
 def get_operator
@@ -21,43 +21,41 @@ def say_result(solution)
   say "Answer: #{solution}"
 end
 
-def calculate(num1, num2)
-  operator = get_operator.to_i
-
-  if operator == 1
-    result = num1 + num2
-  elsif operator == 2
-    result = num1 - num2
-  elsif operator == 3
-    result = num1 * num2
-  elsif operator == 4
-    result = num1 / num2
-  end
-
-  if result.nil?
-    say "Please enter a number from 1 through 4"
-    calculate
+def calculate(num1, num2, operator)
+  case operator
+  when "1"
+    result = num1.to_i + num2.to_i
+  when "2"
+    result = num1.to_i - num2.to_i
+  when "3"
+    result = num1.to_i * num2.to_i
+  when "4"
+    result = num1.to_f / num2.to_f
   else
-    say_result result
+    say "Please enter a number from 1 through 4"
+    get_operator(num1, num2)
+    return
   end
 
-  prompt_for_new_calculation
+  say_result result
+end
+
+def process_request(num1, num2)
+  operator = get_operator
+  result = calculate(num1, num2, operator)
 end
 
 def start
   num1, num2 = get_values
-  calculate(num1, num2)
+  process_request(num1, num2)
+
+  prompt_for_new_calculation
 end
 
 def prompt_for_new_calculation
   say "Would you like to process another calculation?"
 
-  case gets.chomp.downcase
-  when "y"
-    start
-  else
-    nil
-  end
+  start if gets.chomp.downcase == "y"
 end
 
 start
