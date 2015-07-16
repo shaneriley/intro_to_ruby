@@ -1,11 +1,11 @@
 class String
-  def colorize(color)
-    color = { "p" => 31, "r" => 32, "s" => 36 }[color]
+  def colorize(move)
+    color = { "p" => 31, "r" => 32, "s" => 36 }[move]
     "\e[#{color}m#{self}\e[0m"
   end
 end
 
-@moves = {
+MOVES = {
   "p" => "paper",
   "r" => "rock",
   "s" => "scissors"
@@ -59,7 +59,7 @@ def decision_screen(player_move, computer_move)
   border
   border "You chose #{player_move.colorize(player_move)}. Computer chose #{computer_move.colorize(computer_move)}.\n"
   border
-  border "#{@moves[player_move].colorize(player_move)} #{decision[:msg]} #{@moves[computer_move].colorize(computer_move)}"
+  border "#{MOVES[player_move].colorize(player_move)} #{decision[:msg]} #{MOVES[computer_move].colorize(computer_move)}"
   border "Play again?\n"
   border
   bottom_border
@@ -94,7 +94,7 @@ loop do
   intro_screen
 
   player_move = gets.chomp.downcase
-  computer_move = %w(p r s).sample
+  computer_move = MOVES.keys.sample
 
   decision_screen(player_move, computer_move)
 
